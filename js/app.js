@@ -1,5 +1,7 @@
 
 let input=document.querySelector('#autocomplete');
+
+
 function ciSearch(what = '', where = '') {
   return where.toUpperCase().search(what.toUpperCase());
 }
@@ -70,8 +72,6 @@ const debounce = (fn, debounceTime) => {
 let fetchinput = async ()=>{
   list.innerHTML = '';
   listItems = [];
-  let value = input.value;
-  if(!value) return setActive(false);
   
   let response=await fetch('https://api.github.com/search/repositories?q='+input.value);
   console.log(response)
@@ -101,8 +101,12 @@ let fetchinput = async ()=>{
 }
 let fetchD=debounce(fetchinput,400)
 input.addEventListener('input',async () => {
-
+  let value = input.value;
+  if(value.replaceAll(" ","")==""){
+    return setActive(false)
+  }
   fetchD();
+
 
 });
 
